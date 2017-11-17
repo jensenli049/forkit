@@ -16,7 +16,7 @@ int main(){
 }
 
 int sleepnum(){
-  srand( time(NULL) );
+  srand( getpid() );
   int ans = rand()%16 + 5;
   return ans;
 }
