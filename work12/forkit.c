@@ -2,17 +2,16 @@
 
 int main(){
   int pid;
+    int tmp;
 
-  printf("Hi, I'm the parent!\n My pid is: %d\n", getpid());
+  printf("Hi, I'm the parent! My pid is: %d, and I'm about to fork!\n", getpid());
   pid = fork();
   
   if( pid ){ //if parent
-    parent(getpid());
+      tmp = fork();
   }
-  else {
-    printf("---------");
-    child(getpid());
-  }
+
+    doWork(pid, tmp);
   
 }
 
@@ -22,22 +21,28 @@ int sleepnum(){
   return ans;
 }
 
-int child( int pid ){
-  int tmp = sleepnum();
-  printf("Hi, I'm a child! My pid is: %d\n", pid);
-  sleep(tmp);
-  printf("Sir, I'm done sleeping!\n");
-  return tmp;
+void doWork(int pid, int tmp){
+    if(pid && tmp){  //if parent
+        parent();
+    }
+    else
+        child();
+    
 }
 
-int parent( int pid ){
+void child(){
+  int tmp = sleepnum();
+  printf("Hi, I'm a child! My pid is: %d\n", getpid());
+  sleep(tmp);
+  //printf("Sir, I'm done sleeping!\n");
+  printf("I'm %d! I just woke up from a %d second nap!\n", getpid(), tmp);
+}
+
+void parent(){
   int status;
-  int f = fork(); //make second child
-  if( f )
-    printf("I'm %d! I just woke up from a %d second nap!\n", f, child(f));
-  else{
+  //int f = fork(); //make second child
+
     wait(&status);
     printf("My life is complete, time to die...\n");
-  }
-  return f;
+
 }

@@ -7,5 +7,6 @@
 #include <sys/wait.h>
 
 int sleepnum();
-int child( int pid );
-int parent( int pid );
+void child();
+void parent();
+void doWork(int pid, int tmp);
